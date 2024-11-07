@@ -11,7 +11,7 @@ switch (command) {
         createGitDirectory();
         break;
     case 'cat-file':
-        const hash = process.argv[4];
+        const hash = process.argv[process.argv.length - 1];
         catFile(hash);
         break;
     default:
@@ -27,6 +27,6 @@ function createGitDirectory() {
 async function catFile(hash) {
     const content = await fs.readFileSync(path.join(process.cwd(), ".git", "objects", hash.slice(0, 2), hash.slice(2)));
     const dataUnzipped = zlib.inflateSync(content);
-    const res = dataUnzipped.toString().split('\0')[1];
+    const res = dataUnzipped.toString().split('\x00')[1];
     process.stdout.write(res);
 }
