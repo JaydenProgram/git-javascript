@@ -27,6 +27,6 @@ const command = process.argv[2];
     async function catFile(hash) {
         const content = await fs.readFileSync(path.join(process.cwd(), ".git", "objects", hash.slice(0, 2), hash.slice(2)));
         const dataUnzipped = zlib.inflateSync(content);
-        const res = dataUnzipped.toString().split('\0')[1];
+        const res = dataUnzipped.toString().split('\0')[1].split('\n')[0];
         process.stdout.write(res);
     }
